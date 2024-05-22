@@ -7,7 +7,7 @@ torch>=2.0.0
 torchvision>=0.15.1
 opencv-python-headless>=4.6.0.66
 matplotlib>=3.6.2
-detectron2==0.6
 boto3>=1.26.24
 tqdm>=4.64.1
+
 
