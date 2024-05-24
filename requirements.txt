@@ -1,9 +1,9 @@
-streamlit==1.16.0
+torch
+streamlit
 pandas>=1.5.3
 numpy>=1.23.5
 Pillow>=9.3.0
 shapely>=1.8.5.post1
-torch
 torchvision>=0.15.1
 opencv-python-headless>=4.6.0.66
 matplotlib>=3.6.2
