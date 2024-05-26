@@ -1,4 +1,4 @@
-opencv-contrib-python-headless-4.9.0.80
+opencv-contrib-python-headless==4.9.0.80
 streamlit
 pandas
 numpy
