@@ -1,14 +1,14 @@
-torch>=1.7
+torch==2.0.1
 streamlit
-pandas>=1.5.3
-numpy>=1.23.5
-Pillow>=9.3.0
-shapely>=1.8.5.post1
-torchvision>=0.15.1
-opencv-python-headless>=4.6.0.66
-matplotlib>=3.6.2
-boto3>=1.26.24
-tqdm>=4.64.1
+pandas
+numpy
+Pillow
+shapely
+torchvision
+opencv-python-headless
+matplotlib
+boto3
+tqdm
 
 #'git+https://github.com/facebookresearch/detectron2.git' #detectron2
 
