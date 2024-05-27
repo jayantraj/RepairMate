@@ -2,7 +2,6 @@ import streamlit
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import torch
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog
@@ -11,8 +10,12 @@ from detectron2 import model_zoo
 from detectron2.structures import Boxes, Instances
 import json
 import sys
+import os
 
 import warnings
+
+import torch
+print('torch version', torch.__version__)
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")
@@ -20,13 +23,23 @@ warnings.filterwarnings("ignore")
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=UserWarning, message="torch.meshgrid: in an upcoming release")
 
+# Add necessary directories to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Debugging information
+print("Current working directory:", os.getcwd())
+print("Files in the current directory:", os.listdir('.'))
+print("Files in the Model1_largedata directory:", os.listdir('Model1_largedata'))
+print("sys.path:", sys.path)
+print("Python executable:", sys.executable)
+
 """
 This file makes the prediction for the car part category and write the result in COCO-Format to the JSON File.
-
 """
 
 # Function to setup configuration and create predictor
 def setup_cfg(model_weights, score_threshold, num_classes):
+    print('torch version', torch.__version__)
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file('COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml'))
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = score_threshold  # set threshold for this model
@@ -42,7 +55,7 @@ def predict(image_path, predictor):
     return im, outputs
 
 # Function to visualize the predictions
-def visualize_predictions(image, outputs, metadata,save_path=None):
+def visualize_predictions(image, outputs, metadata, save_path=None):
     v = Visualizer(image[:, :, ::-1],
                    metadata=metadata, 
                    scale=0.5)  # Keeping the original colors of the image
@@ -55,7 +68,6 @@ def visualize_predictions(image, outputs, metadata,save_path=None):
         plt.savefig(save_path)
         plt.close()
     return result_image
-
 
 # Function to extract and print prediction details
 def extract_prediction_details(outputs):
@@ -143,18 +155,8 @@ def save_to_coco_format(image_id, image_path, pred_boxes, pred_classes, pred_mas
     with open(output_json, 'w') as f:
         json.dump(coco_output, f, indent=4)
 
-
-"""
-The input is uploaded image, output directory, class_names.txt, model_weights, output_image_path which comes from app.py.
-"""
-
 # Main function
-def main(image_path,output_json,class_list_file,model_weights,output_image_path):
-    # Path to model weights
-    # model_weights = "model_0009999.pth"
-    
-    # class_list_file = 'class_names.txt'
-
+def main(image_path, output_json, class_list_file, model_weights, output_image_path):
     # List of classes used in training
     with open(class_list_file, 'r') as reader:
         thing_classes = [l.strip() for l in reader.readlines()]
@@ -170,9 +172,6 @@ def main(image_path,output_json,class_list_file,model_weights,output_image_path)
     
     # Load Metadata
     metadata = MetadataCatalog.get("my_dataset")
-    
-    # Path to input image
-    # image_path = "Data/test/imgs/test_image_5.jpg"
     
     # Make predictions
     image, outputs = predict(image_path, predictor)
@@ -193,22 +192,11 @@ def main(image_path,output_json,class_list_file,model_weights,output_image_path)
     # Update the outputs with filtered instances
     outputs["instances"] = filtered_instances
     
-    # output_image_path = 'path/to/save/visualized_predictions.jpg'
-    visualize_predictions(image, outputs, metadata, save_path=output_image_path)
     # Visualize predictions
-    # vis_image = visualize_predictions(image, outputs, metadata)
-    
-    # Display the image :  Plt.show() doesn't work in streamlit app. So, we are saving the visualization
-    # to a file.
-    # plt.figure(figsize=(14, 10))
-    # plt.imshow(vis_image)
-    # plt.axis('off')
-    # plt.show()
+    visualize_predictions(image, outputs, metadata, save_path=output_image_path)
     
     # Save the predictions to COCO format JSON file
-    # output_json = "predicted_car_part_annos.json"
-
-    save_to_coco_format(image_id=1, image_path=image_path, pred_boxes=pred_boxes, pred_classes=pred_classes, pred_masks=pred_masks, pred_scores=pred_scores, output_json=output_json)
+    save_to_coco_format(image_id=1, image_path=image_path, pred_boxes=pred_boxes, pred_classes=pred_classes, pred_masks=pred_masks, pred_scores, output_json=output_json)
 
 if __name__ == "__main__":
     image_path = sys.argv[1]
@@ -216,4 +204,5 @@ if __name__ == "__main__":
     class_names_list = sys.argv[3]
     model_weights = sys.argv[4]
     output_image_path = sys.argv[5]
-    main(image_path, output_json,class_names_list,model_weights,output_image_path)
+    main(image_path, output_json, class_names_list, model_weights, output_image_path)
+
