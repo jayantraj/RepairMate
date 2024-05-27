@@ -4,3 +4,8 @@ pandas
 numpy
 Pillow
 shapely
+torch==2.2.2
+torchvision
+matplotlib
+boto3
+tqdm
