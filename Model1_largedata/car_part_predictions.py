@@ -196,7 +196,7 @@ def main(image_path, output_json, class_list_file, model_weights, output_image_p
     visualize_predictions(image, outputs, metadata, save_path=output_image_path)
     
     # Save the predictions to COCO format JSON file
-    save_to_coco_format(image_id=1, image_path=image_path, pred_boxes=pred_boxes, pred_classes=pred_classes, pred_masks=pred_masks, pred_scores, output_json=output_json)
+    save_to_coco_format(image_id=1, image_path=image_path, pred_boxes=pred_boxes, pred_classes=pred_classes, pred_masks=pred_masks, pred_scores=pred_scores, output_json=output_json)
 
 if __name__ == "__main__":
     image_path = sys.argv[1]
@@ -205,4 +205,3 @@ if __name__ == "__main__":
     model_weights = sys.argv[4]
     output_image_path = sys.argv[5]
     main(image_path, output_json, class_names_list, model_weights, output_image_path)
-
