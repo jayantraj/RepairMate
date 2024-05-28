@@ -10,25 +10,17 @@ import streamlit as st
 import subprocess
 from PIL import Image
 import os
-import sys
 import warnings
+import sys
 import contextlib
 import pandas as pd
+import cv2
 
 # Suppress all warnings
 warnings.filterwarnings("ignore")
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=UserWarning, message="torch.meshgrid: in an upcoming release")
-
-# Add the directory to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'Model1_largedata')))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'Model2')))
-
-# Check installed packages
-st.write("Installed packages:")
-result = subprocess.run(['pip', 'list'], stdout=subprocess.PIPE)
-st.text(result.stdout.decode('utf-8'))
 
 # Context manager to suppress stderr
 @contextlib.contextmanager
@@ -44,8 +36,6 @@ def suppress_stderr():
 # Function to run a Python script
 def run_script(script_path, *args):
     try:
-        # Debugging: Print the command being run
-        st.text(f"Running command: python {script_path} {' '.join(args)}")
         with suppress_stderr():
             result = subprocess.run(
                 ['python', script_path, *args],
@@ -119,16 +109,19 @@ if uploaded_file is not None:
         damage_image = Image.open(damage_output_image_path)
         st.image(damage_image, caption='Damage Predictions', use_column_width=True)
 
+
     # Run the script to calculate repair costs
     repair_cost_script = 'dice_coefficient_repair_cost.py'
     repair_cost_output_csv = "Results/repair_cost_outputs.csv"
     repair_stdout, repair_stderr = run_script(repair_cost_script, "Results/predicted_damage_annos.json", "Results/predicted_car_part_annos.json", repair_cost_output_csv)
     
     # Display repair cost calculation outputs
+    # st.text("Repair Cost Calculation Output:")
     st.text(repair_stdout)
     if repair_stderr:
-        st.text("Errors:")
-        st.text(repair_stderr)
+        # st.text("Errors:")
+        # st.text(repair_stderr)
+        print('')
     
     # Read and display total cost
     if os.path.exists(repair_cost_output_csv):
@@ -137,7 +130,7 @@ if uploaded_file is not None:
             total_cost = df['total_cost'].iloc[0]
             st.write(f"Total Repair Cost: ${total_cost}")
         else:
+            # st.write("No Damage Detected...")
             st.write("Please Upload a Alternate/Brighter Image")
-
 
 
