@@ -4,7 +4,7 @@ This project provides an innovative solution to estimate the repair cost of a da
 
 # Key Features
 We perform three main tasks:
-**Car Part Identification**: Detects various car parts in the image (e.g., front bumper, door, wheel, etc.).
+**Car Part Identification**: Detects various car parts in the image (e.g., front bumper, door, wheel, etc.).<br>
 **Damage Severity Assessment**: Classifies the intensity of the damage as minor, moderate, or severe.
 **Repair Cost Estimation**: Calculates the repair cost based on the results from the car part identification and damage severity assessment.
 
