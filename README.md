@@ -11,6 +11,6 @@ We perform three main tasks:<br><br>
 **Deployment**<br><br>
 The application is deployed on AWS EC2 using Docker for scalability and accessibility.
 
-**Demo**
+# Demo
 
 [demo.webm](https://github.com/jayantraj/RepairMate/assets/41659842/027844f2-d340-428b-916f-925f0492c40c)
