@@ -1,7 +1,7 @@
 # RepairMate
 RepairMate: Vehicle Damage Detection and Cost Estimation
 
-This project provides an innovative solution to estimate the repair cost of a damaged car directly from an uploaded image. The model is deployed on AWS and can be accessed (http://18.118.24.151:8501/).
+This project provides an innovative solution to estimate the repair cost of a damaged car directly from an uploaded image. The model is deployed on AWS and can be accessed here.
 # Key Features
 We perform three main tasks:
 # Car Part Identification:
